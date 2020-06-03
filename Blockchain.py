@@ -21,11 +21,11 @@ class Block:
         self.timestamp = timestamp
         self.previous_hash = previous_hash
     
-    def compute_hash(self,block):
+    def compute_hash(self):
         """ Returns the hash from a JSON
         
         """
-        block_string = json.dump(self.__dict__, sort_keys=True)
+        block_string = json.dumps(self.__dict__, sort_keys=True)
         return sha256(block_string.encode()).hexdigest()
 
 
@@ -56,4 +56,6 @@ class Blockchain:
         return self.chain[-1]
 
 
-    
+if __name__ == "__main__":
+    A = Blockchain()
+    print(A.last_block.index)

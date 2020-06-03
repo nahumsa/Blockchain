@@ -2,15 +2,14 @@ import sys
 sys.path.append('../')
 
 import unittest
-from Blockchain import *
+from Blockchain import Blockchain
 
 class GenesisBlockTest(unittest.TestCase):
-    def test(self):
-        blockchain = Blockchain()
-        #self.assertEqual()
+    def test(self):        
+        self.assertEqual(Blockchain().last_block.index,
+                         '0')
 
 
 
 if __name__ == '__main__':
-    genesis = GenesisBlockTest()
-    print(genesis.last_block())
+    GenesisBlockTest()

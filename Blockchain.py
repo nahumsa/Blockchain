@@ -32,16 +32,15 @@ class Block:
 class Blockchain:
     def __init__(self):
         """ Construct of blockchain class
-        
         """
         self.chain = []
         self.create_genesis_block()
     
     def create_genesis_block(self):
-        """ Creates the first block of the blockchain
+        """Creates the first block of the blockchain
         and appends to the chain.
-        
         """
+        
         genesis_block = Block(index=0, transaction=[], 
                               timestamp=time.time(), previous_hash="0")
 
@@ -49,13 +48,28 @@ class Blockchain:
         self.chain.append(genesis_block)
         
     @property
-    def last_block(self):
+    def last_block(self):        
         """ Returns the last block
 
+        Returns:
+            int: Return the chain.
         """
         return self.chain[-1]
 
+    difficulty = 2
 
-if __name__ == "__main__":
-    A = Blockchain()
-    print(A.last_block.index)
+    def proof_of_work(self, block):
+        """Run the hash until it satisfies the constraints
+        that we imposed, that is 0 times the difficulty of 
+        our proof of work. This exploits the asymetry of 
+        computing the hash function.
+
+        Args:
+            block: Blockchain block.
+        """
+        block.nonce = 0
+
+        compute_hash = block.compute_hash()
+
+        while not compute_hash.startswith('0' * Blockchain.difficulty):
+            block.nonce += 1

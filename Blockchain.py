@@ -111,3 +111,13 @@ class Blockchain:
         return ( block_hash.starstwith('0' * Blockchain.difficulty) and
                  block_hash == block.comput_hash()
                 )
+
+    def add_new_transaction(self, transaction):
+        """ Add a new transaction to the blockchain.
+
+        Args:
+            transaction (JSON): New transaction to be added to
+                                the blockchain.
+        """
+
+        self.unconfirmed_transaction.append(transaction)

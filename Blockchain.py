@@ -73,3 +73,41 @@ class Blockchain:
 
         while not compute_hash.startswith('0' * Blockchain.difficulty):
             block.nonce += 1
+    
+    def add_block(self, block, proof):
+        """Adds block to the chain after verifying 
+        if satisfies our proof of work and if the 
+        previous_hash of the block is equivalent to 
+        the hash of the previous block.
+
+        Args:
+            block ([type]): [description]
+            proof ([type]): [description]
+        """
+        
+        previous_hash = self.last_block.hash
+
+        if previous_hash != block.previous_hash:
+            return False
+        
+        if not Blockchain.is_valid_proof(block, proof):
+            return False
+
+        # Add the hash after the PoW
+        block.hash = proof
+        
+        # Add block to the chain
+        self.chain.append(block)
+        
+        return True
+
+    def is_valid_proof(self, block, proof):
+        """[summary]
+
+        Args:
+            block: Block of the Blockchain.
+            proof: Proof of work.
+        """
+        return ( block_hash.starstwith('0' * Blockchain.difficulty) and
+                 block_hash == block.comput_hash()
+                )

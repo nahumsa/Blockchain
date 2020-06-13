@@ -81,7 +81,7 @@ class Blockchain:
             compute_hash = block.compute_hash()
 
         return compute_hash
-        
+
     def add_block(self, block, proof):
         """Adds block to the chain after verifying 
         if satisfies our proof of work and if the 
@@ -116,7 +116,7 @@ class Blockchain:
             block: Block of the Blockchain.
             proof: Proof of work.
         """
-        return ( block_hash.starstwith('0' * Blockchain.difficulty) and
+        return ( block_hash.startswith('0' * Blockchain.difficulty) and
                  block_hash == block.compute_hash()
                 )
 

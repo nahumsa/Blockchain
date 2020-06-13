@@ -3,7 +3,8 @@ import json
 import time
 
 class Block:
-    def __init__(self, index, transaction, timestamp, previous_hash):
+    def __init__(self, index, transaction, 
+                 timestamp, previous_hash):
         """Constructor of Block class, the block
         is the foundation of the blockchain.
 
@@ -19,8 +20,8 @@ class Block:
         self.index = index
         self.transaction = transaction
         self.timestamp = timestamp
-        self.previous_hash = previous_hash
-    
+        self.previous_hash = previous_hash        
+
     def compute_hash(self):
         """ Returns the hash from a JSON
         
@@ -30,12 +31,14 @@ class Block:
 
 
 class Blockchain:
-    def __init__(self):
+    def __init__(self, debugging=False):
         """ Construct of blockchain class
         """
         self.chain = []
+        self.unconfirmed_transactions = []
         self.create_genesis_block()
-    
+        self.debugging = debugging
+
     def create_genesis_block(self):
         """Creates the first block of the blockchain
         and appends to the chain.
@@ -72,6 +75,8 @@ class Blockchain:
         compute_hash = block.compute_hash()
 
         while not compute_hash.startswith('0' * Blockchain.difficulty):
+            if self.debugging:
+                print(f'Block nonce: {block.nonce}')
             block.nonce += 1
     
     def add_block(self, block, proof):
@@ -120,7 +125,7 @@ class Blockchain:
                                 the blockchain.
         """
 
-        self.unconfirmed_transaction.append(transaction)
+        self.unconfirmed_transactions.append(transaction)
 
     def mine(self):
         
@@ -129,16 +134,22 @@ class Blockchain:
         
         last_block = self.last_block
 
-        new_block = Block(  index= last_block.index +1,
-                            transaction=self.unconfirmed_transactions,
-                            timestamp=time.time(),
-                            previous_hash=last_block.hash
-                            )
+        new_block = Block(index= last_block.index +1,
+                          transaction=self.unconfirmed_transactions,
+                          timestamp=time.time(),
+                          previous_hash=last_block.hash
+                          )
+        if self.debugging:
+            print('New block constructed!')
         
         # Do the proof of work of the new block
         proof = self.proof_of_work(new_block)
+        
+        if self.debugging:
+            print('New block constructed!')
         # Add the block
         self.add_block(new_block, proof)
+        
         # Reset the unconfirmed transactions
         self.unconfirmed_transactions = []
 

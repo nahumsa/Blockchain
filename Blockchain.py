@@ -59,7 +59,7 @@ class Blockchain:
         """
         return self.chain[-1]
 
-    difficulty = 2
+    difficulty = 1
 
     def proof_of_work(self, block):
         """Run the hash until it satisfies the constraints
@@ -78,7 +78,10 @@ class Blockchain:
             if self.debugging:
                 print(f'Block nonce: {block.nonce}')
             block.nonce += 1
-    
+            compute_hash = block.compute_hash()
+
+        return compute_hash
+        
     def add_block(self, block, proof):
         """Adds block to the chain after verifying 
         if satisfies our proof of work and if the 
@@ -95,7 +98,7 @@ class Blockchain:
         if previous_hash != block.previous_hash:
             return False
         
-        if not Blockchain.is_valid_proof(block, proof):
+        if not self.is_valid_proof(block, proof):
             return False
 
         # Add the hash after the PoW
@@ -106,7 +109,7 @@ class Blockchain:
         
         return True
 
-    def is_valid_proof(self, block, proof):
+    def is_valid_proof(self, block, block_hash):
         """Test if the proof of work is valid.
 
         Args:
@@ -114,7 +117,7 @@ class Blockchain:
             proof: Proof of work.
         """
         return ( block_hash.starstwith('0' * Blockchain.difficulty) and
-                 block_hash == block.comput_hash()
+                 block_hash == block.compute_hash()
                 )
 
     def add_new_transaction(self, transaction):
@@ -139,6 +142,7 @@ class Blockchain:
                           timestamp=time.time(),
                           previous_hash=last_block.hash
                           )
+        
         if self.debugging:
             print('New block constructed!')
         
@@ -147,6 +151,7 @@ class Blockchain:
         
         if self.debugging:
             print('New block constructed!')
+        
         # Add the block
         self.add_block(new_block, proof)
         

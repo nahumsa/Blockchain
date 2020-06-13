@@ -35,3 +35,15 @@ def get_chain():
     return json.dumps({"length": len(chain_data),
                         "chain": chain_data})
 
+@app.route('/mine', methods=['GET'])
+def mine_unconfirmed_transaction():
+    result = blockchain.mine()
+    
+    if not result:
+        return "No transaction to mine."
+    
+    return f"Block #{result} is mined."
+
+@app.route('/pending_tx')
+def get_pending_tx():
+    return json.dumps(blockchain.unconfirmed_transactions)

@@ -155,7 +155,7 @@ def consensus():
     current_len = len(blockchain.chain)
 
     for node in peers:
-        response = request.get(f'{node}/chain')
+        response = request.get(f'http://{node}/chain')
         lenght = request.json()['lenght']
         chain = response.json()['chain']
 
@@ -199,7 +199,7 @@ def announce_new_block(block):
     """
 
     for peer in peers:
-        url = f'{peer}add_block'
+        url = f'http://{peer}/add_block'
         requests.post(url, data=json.dumps(block.__dict__, sort_keys=True)))
         
 # The announce_new_block shoud be called after every block

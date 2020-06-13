@@ -1,6 +1,8 @@
 from Blockchain import Blockchain
 from flask import Flask, request
 import requests
+import json
+import time
 
 # Initializing flask application
 app = Flask(__name__)
@@ -22,3 +24,14 @@ def new_transaction():
     blockchain.add_new_transaction(tx_data)
 
     return "Success!", 201
+
+@app.route('/chain', methods=['GET'])
+def get_chain():
+    chain_data = []
+    
+    for block in blockchain.chain:
+        chain_data.append(block.__dict__)
+    
+    return json.dumps({"length": len(chain_data),
+                        "chain": chain_data})
+

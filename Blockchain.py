@@ -102,7 +102,7 @@ class Blockchain:
         return True
 
     def is_valid_proof(self, block, proof):
-        """[summary]
+        """Test if the proof of work is valid.
 
         Args:
             block: Block of the Blockchain.
@@ -121,3 +121,26 @@ class Blockchain:
         """
 
         self.unconfirmed_transaction.append(transaction)
+
+    def mine(self):
+        
+        if not self.unconfirmed_transactions:
+            return False
+        
+        last_block = self.last_block
+
+        new_block = Block(  index= last_block.index +1,
+                            transaction=self.unconfirmed_transactions,
+                            timestamp=time.time(),
+                            previous_hash=last_block.hash
+                            )
+        
+        # Do the proof of work of the new block
+        proof = self.proof_of_work(new_block)
+        # Add the block
+        self.add_block(new_block, proof)
+        # Reset the unconfirmed transactions
+        self.unconfirmed_transactions = []
+
+        return new_block.index
+

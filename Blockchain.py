@@ -76,6 +76,7 @@ class Blockchain:
 
         while not compute_hash.startswith('0' * Blockchain.difficulty):
             if self.debugging:
+                print('Debugging')
                 print(f'Block nonce: {block.nonce}')
             block.nonce += 1
             compute_hash = block.compute_hash()
